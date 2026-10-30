@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEBENTEC S.A. - Cotizador Online</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --accent: #d35400;
+      --accent-hover: #e67e22;
+      --text-color: #f5f5f5;
+      --text-muted: #aaa;
+      --border-color: #333;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: var(--card-bg); border-radius: 8px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
+    header { text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 20px; margin-bottom: 30px; }
+    header h1 { font-size: 2.2rem; color: #fff; letter-spacing: 2px; }
+    header p { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--text-color); }
+    select, input { width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid var(--border-color); color: #fff; border-radius: 4px; font-size: 1rem; }
+    select:focus, input:focus { border-color: var(--accent); outline: none; }
+    .summary-box { background: #181818; padding: 20px; border-radius: 6px; border-left: 4px solid var(--accent); }
+    .price-tag { font-size: 2rem; color: var(--accent); font-weight: bold; margin: 15px 0; }
+    .btn { display: inline-block; width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 4px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background 0.3s; text-align: center; text-decoration: none; margin-top: 10px; }
+    .btn:hover { background: var(--accent-hover); }
+    footer { margin-top: 30px; text-align: center; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border-color); padding-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>HEBENTEC S.A.</h1>
+      <p>Elevar-Arte | Soluciones Integrales de Elevación</p>
+    </header>
+
+    <div class="grid">
+      <div class="form-section">
+        <div class="form-group">
+          <label for="tipo">Tipo de Equipo:</label>
+          <select id="tipo" onchange="calcular()">
+            <option value="3500000">Ascensor Residencial</option>
+            <option value="4800000">Ascensor Comercial</option>
+            <option value="5200000">Montacargas Industrial</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="paradas">Número de Paradas (Niveles):</label>
+          <select id="paradas" onchange="calcular()">
+            <option value="2">2 Paradas</option>
+            <option value="3">3 Paradas (+ $450.000)</option>
+            <option value="4">4 Paradas (+ $900.000)</option>
+            <option value="5">5 Paradas (+ $1.350.000)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="acabado">Acabado Interior:</label>
+          <select id="acabado" onchange="calcular()">
+            <option value="0">Estándar (Pintura Epoxi)</option>
+            <option value="350000">Acero Inoxidable Satinado (+ $350.000)</option>
+            <option value="600000">Acero Inoxidable y Paneles Panorámicos (+ $600.000)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-box">
+          <h3>Resumen Estimado</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Neuquén & Vaca Muerta</p>
+          <div class="price-tag" id="precioTotal">$ 3.500.000 ARS</div>
+          <p>* Presupuesto sujeto a relevamiento técnico en obra.</p>
+          <a id="btnWhatsapp" href="#" target="_blank" class="btn">Consultar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>HEBENTEC S.A.</strong> — Neuquén / Patagonia Argentina</p>
+      <p>Contacto: Pamela Pato | 📧 obrashebentec@gmail.com | 📱 +54 9 11 2651-2735</p>
+    </footer>
+  </div>
+
+  <script>
+    function calcular() {
+      const base = parseInt(document.getElementById('tipo').value);
+      const paradas = (parseInt(document.getElementById('paradas').value) - 2) * 450000;
+      const acabado = parseInt(document.getElementById('acabado').value);
+      
+      const total = base + paradas + acabado;
+      const totalFormatted = "$ " + total.toLocaleString('es-AR') + " ARS";
+      
+      document.getElementById('precioTotal').innerText = totalFormatted;
+
+      const mensaje = encodeURIComponent(`Hola HEBENTEC S.A., me interesa solicitar una cotización con una estimación de: ${totalFormatted}.`);
+      document.getElementById('btnWhatsapp').href = `https://wa.me/5491126512735?text=${mensaje}`;
+    }
+    calcular();
+  </script>
+</body>
+</html>
